@@ -2,7 +2,7 @@
  * Alex Blackwell
  * August 7th, 2020
  * Light Switch Robot
- * 
+ *
  * This project is based on going to sleep at 12am and waking up at 8am.
  * The light will turn on at 8am and the display will let you know to go asleep at 12am.
  * The dialogue considers 4:59am as late and 5am as early (I've had some late nights).
@@ -14,13 +14,14 @@
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 
-#define SCREEN_WIDTH 128 // OLED display width, in pixels
-#define SCREEN_HEIGHT 64 // OLED display height, in pixels
+#define SCREEN_WIDTH 128  // OLED display width, in pixels
+#define SCREEN_HEIGHT 64  // OLED display height, in pixels
 
 
 Servo servo;
 int servoSpeed = 2;
 int degreeOfRotation = 90;
+int offset = 13.5;  // hour offset, plug in at 6pm and wake up at 8am
 
 // Declaration for an SSD1306 display connected to I2C (SDA, SCL pins)
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
@@ -37,6 +38,15 @@ void setup(void) {
   servo.attach(9);  // use d-9 for servo signal
 
   toggleLight();
+
+  display.setTextSize(2);
+  display.setCursor(0, 0);
+  display.setTextColor(WHITE);
+  display.clearDisplay();
+  display.println("Waiting\nfor\n8am...");
+  display.display();
+
+  delay(offset*60*60*1000);  // launch at 6:30pm, activate at 8am
 }
 
 
@@ -75,7 +85,7 @@ void countDown(void) {
         // let 5am be early and 4:59am be late
         display.print(8-hours);
         display.print(" hours\npast your\nbedtime");
-      } 
+      }
       else if(hours >= 1) {
         display.print("Waking up in ");
         display.print(hours);
