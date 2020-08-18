@@ -134,7 +134,7 @@ void countDown(void) {
       }
     }
 
-    delay(949);  // in practice, calculations take some time
+    delay(945);  // in practice, calculations take some time
   }
 }
 
