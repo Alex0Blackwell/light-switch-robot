@@ -13,7 +13,11 @@ This is an Arduino project to turn on my room light in the morning to avoid over
 
 > Horrible looking but functional prototype :smiley:
 
-![image](./.pictures/prototype.jpg "I swear it works!")
+![image](./.pictures/prototype.png "I swear it works!")
+
+> Finalized model. Still not pretty, but at least not bringing down the house value
+
+![image](./.pictures/finalized.png "A fun message for my mom!")
 
 ## Technologies
 - **Arduino Uno**
