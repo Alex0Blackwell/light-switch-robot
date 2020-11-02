@@ -1,6 +1,6 @@
 /**
  * Alex Blackwell
- * August 7th, 2020
+ * November 1, 2020
  * Light Switch Robot
  *
  * This project is based on going to sleep at 12am and waking up at 8am.
@@ -21,7 +21,7 @@
 Servo servo;
 int servoSpeed = 2;
 int degreeOfRotation = 90;
-int offset = 13.5;  // hour offset, plug in at 6pm and wake up at 8am
+int offset = 8.5;  // hour offset, plug in at 11pm and wake up at 8am
 
 // Declaration for an SSD1306 display connected to I2C (SDA, SCL pins)
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
@@ -43,7 +43,7 @@ void setup(void) {
   display.setCursor(0, 0);
   display.setTextColor(WHITE);
   display.clearDisplay();
-  display.println("Waiting\nfor\n8am...");
+  display.println("Waiting\nfor\n8am....");
   display.display();
 
   delay(offset*60*60*1000);  // launch at 6:30pm, activate at 8am
@@ -76,15 +76,25 @@ void countDown(void) {
     if(hours <= 8) {
       // let bed time be 12am
       display.setTextSize(2);
-      display.println("You are:");
+      display.println("It is:");
       if(hours == 8) {
         display.print(mins);
-        display.print(" mins\npast your\nbedtime");
+        display.print(" mins\nuntil your\nbedtime");
       }
       else if(hours > 3) {
         // let 5am be early and 4:59am be late
-        display.print(8-hours);
-        display.print(" hours\npast your\nbedtime");
+        // until an hour past, display in minutes
+        if(hours == 7) {
+          display.print(mins);
+          display.print(" mins\npast\nbedtime");
+        } else {
+          // rounds down
+          display.print(7-hours);
+          if(hours == 6)  // one hour past
+            display.print(" hour\npast your\nbedtime");
+          else
+            display.print(" hours\npast your\nbedtime");
+        }
       }
       else if(hours >= 1) {
         display.print("Waking up in ");
@@ -100,9 +110,9 @@ void countDown(void) {
           display.print("s");
       }
     } else {
-      display.print(hours);
+      display.print(hours-8);
       display.print(" hour");
-      if(hours > 1)
+      if(hours-8 > 1)
         display.print("s");
       display.println();
 
